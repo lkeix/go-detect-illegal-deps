@@ -40,8 +40,10 @@ func NewDetector(conf *Config) *Detector {
 	}
 }
 
-func (d *Detector) Detect() error {
+func (d *Detector) Detect() []error {
 	reg := regexp.MustCompile(`\s*.go`)
+
+	errs := []error{}
 	filepath.WalkDir(d.basePath, func(path string, dir os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -66,13 +68,13 @@ func (d *Detector) Detect() error {
 			for _, i := range f.Imports {
 				p := strings.Trim(i.Path.Value, "\"")
 				if !d.ApplyRule(f.Name.Name, p) {
-					fmt.Printf("illegal dependency found: %s -> %s\n", f.Name.Name, p)
+					errs = append(errs, fmt.Errorf("illegal dependency found: %s -> %s\n", f.Name.Name, p))
 				}
 			}
 		}
 		return nil
 	})
-	return nil
+	return errs
 }
 
 func (d *Detector) ApplyRule(from, to string) bool {

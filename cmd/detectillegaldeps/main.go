@@ -4,6 +4,7 @@ import (
 	"flag"
 	detectillegaldeps "github.com/lkeix/go-detect-illegal-deps"
 	"log"
+	"os"
 )
 
 func main() {
@@ -16,5 +17,11 @@ func main() {
 		log.Fatal(err)
 	}
 	d := detectillegaldeps.NewDetector(c)
-	d.Detect()
+	errs := d.Detect()
+	for _, err := range errs {
+		log.Println(err)
+	}
+	if len(errs) != 0 {
+		os.Exit(1)
+	}
 }
