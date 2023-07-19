@@ -1,0 +1,4 @@
+internalPrefix: github.com/lkeix/app
+whitelist:
+  hoge: [piyo, fuga]
+  fuga: [piyo]

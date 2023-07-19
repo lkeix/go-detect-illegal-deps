@@ -1,0 +1,9 @@
+internalPrefix: github.com/lkeix/go-detect-illegal-deps
+whitelist:
+  main:
+    - ""
+  hoge:
+    - "piyo"
+    - "fuga"
+  fuga: 
+    - "piyo"
